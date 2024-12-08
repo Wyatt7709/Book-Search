@@ -2,13 +2,13 @@ import { useState } from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 
-import { createUser } from '../utils/API';
-import Auth from '../utils/auth';
-import type { User } from '../models/User';
+import { useMutation } from '@apollo/client';
+import { ADD_USER } from '../utils/mutations.ts';
+import Auth from '../utils/auth.js';
+import type { User } from '../models/User.js';
+import { FormProps } from './LoginForm.js';
 
-// biome-ignore lint/correctness/noEmptyPattern: <explanation>
-const SignupForm = ({}: { handleModalClose: () => void }) => {
-  // set initial form state
+const SignupForm: React.FC<FormProps> = ({ handleModalClose }) => {
   const [userFormData, setUserFormData] = useState<User>({ username: '', email: '', password: '', savedBooks: [] });
   // set state for form validation
   const [validated] = useState(false);
@@ -19,6 +19,8 @@ const SignupForm = ({}: { handleModalClose: () => void }) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
+
+  const [adduser, { error }] = useMutation(ADD_USER);
 
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,14 +33,17 @@ const SignupForm = ({}: { handleModalClose: () => void }) => {
     }
 
     try {
-      const response = await createUser(userFormData);
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
+      const { data } = await adduser({
+        variables: { input: { ...userFormData } }
+      });
+      if (error) {
+        throw new Error(error.message);
       }
 
-      const { token } = await response.json();
+      const { token } = data.addUser;
       Auth.login(token);
+
+      handleModalClose();
     } catch (err) {
       console.error(err);
       setShowAlert(true);
