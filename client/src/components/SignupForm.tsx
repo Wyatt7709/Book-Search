@@ -8,8 +8,9 @@ import Auth from '../utils/auth.js';
 import type { User } from '../models/User.js';
 import { FormProps } from './LoginForm.js';
 
+
 const SignupForm: React.FC<FormProps> = ({ handleModalClose }) => {
-  const [userFormData, setUserFormData] = useState<User>({ username: '', email: '', password: '', savedBooks: [] });
+  const [userFormData, setUserFormData] = useState<User>({ username: '', email: '', password: ''});
   // set state for form validation
   const [validated] = useState(false);
   // set state for alert
@@ -25,7 +26,7 @@ const SignupForm: React.FC<FormProps> = ({ handleModalClose }) => {
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
+
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -52,8 +53,7 @@ const SignupForm: React.FC<FormProps> = ({ handleModalClose }) => {
     setUserFormData({
       username: '',
       email: '',
-      password: '',
-      savedBooks: [],
+      password: ''
     });
   };
 

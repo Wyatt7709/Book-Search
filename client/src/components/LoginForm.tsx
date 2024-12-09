@@ -56,10 +56,8 @@ const LoginForm: React.FC<FormProps> = ({ handleModalClose }) => {
     }
 
     setUserFormData({
-      username: '',
       email: '',
       password: '',
-      savedBooks: [],
     });
   };
 
