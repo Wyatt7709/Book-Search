@@ -14,7 +14,7 @@ export interface FormProps {
 
 // biome-ignore lint/correctness/noEmptyPattern: <explanation>
 const LoginForm: React.FC<FormProps> = ({ handleModalClose }) => {
-  const [userFormData, setUserFormData] = useState<User>({ username: '', email: '', password: '', savedBooks: [] });
+  const [userFormData, setUserFormData] = useState<User>({  email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
